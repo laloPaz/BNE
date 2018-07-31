@@ -1,0 +1,115 @@
+server:
+  port: 7800
+
+info:
+  component: chnn-bne-v-accountbalance
+
+hystrix:
+ command:
+   default:
+     execution:
+       isolation:
+         thread:
+           timeoutInMilliseconds: 10000
+ threadpool:
+   default:
+     coreSize: 350
+     maximumSize: 350
+     maxQueueSize: -1
+     queueSizeRejectionThreshold: 20
+     allowMaximumSizeToDivergeFromCoreSize: true
+
+feign:
+  hystrix:
+    enabled: true
+
+########## GENERAL PARAMETERS ##########
+
+
+logging:
+  level:
+    org.springframework.web: INFO
+    com.citibanamex: DEBUG
+      
+
+ccp:
+  gemfire:
+    region: OPSV_SESSION_SOEID
+    expire: 900
+    #devhost: db-memory
+    #devhost: localhost
+    devhost: 18.217.254.50
+    devport: 10334
+  
+
+spring:
+  rabbitmq:
+    host: rabbitmq
+  jpa:
+    show-sql: false 
+    
+  # SQL-SERVER settings
+  datasource:
+    url: jdbc:sqlserver://18.217.254.50:1433;databaseName=EBSDB
+    username: sa
+    password: Ap4che01
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    hikari:
+      connection-timeout: 60000
+      maximum-pool-size: 1  
+
+connector:
+  tuxedo:
+    funcional:
+      https: true
+      host: https://dominio-mobile.tk:51732
+      prefijo: /banamex.c735_120/bmxapp/funcional/v1
+      #host: http://bne.tux_sf
+      #prefijo: /v1
+      uri:
+        service: ${connector.tuxedo.funcional.prefijo}/service
+        #services: ${connector.tuxedo.funcional.prefijo}/show/services
+        #info: ${connector.tuxedo.funcional.prefijo}/funcional/info
+        #services: ${connector.tuxedo.funcional.prefijo}/funcional/show/services
+        #service: ${connector.tuxedo.funcional.prefijo}/funcional/service
+        #sserviceExample: ${connector.tuxedo.funcional.prefijo}/funcional/show/parameters-example
+        #serviceParameters: ${connector.tuxedo.funcional.prefijo}/funcional/show/parameters
+      ribbon:
+        eureka:
+          enabled: false
+        NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+        listOfServers: ${connector.tuxedo.funcional.host},${connector.tuxedo.funcional.host}
+        # Max number of retries on the same server (excluding the first try)
+        MaxAutoRetries: 1
+        # Max number of next servers to retry (excluding the first server)
+        MaxAutoRetriesNextServer: 1
+        # Interval to refresh the server list from the source
+        ServerListRefreshInterval: 15000
+
+    canal:
+      https: true
+      host: https://dominio-mobile.tk:51732
+      prefijo: /banamex.c735_120/bmxapp/canal/v1
+      #host: http://bne.tux_ci
+      #prefijo: /v1
+      uri:
+        service: ${connector.tuxedo.canal.prefijo}/service
+        #info: ${connector.tuxedo.canal.prefijo}/canal/info
+        #services: ${connector.tuxedo.canal.prefijo}/canal/show/services
+        #service: ${connector.tuxedo.canal.prefijo}/canal/service
+        #serviceExample: ${connector.tuxedo.canal.prefijo}/canal/show/parameters-example
+        #serviceParameters: ${connector.tuxedo.canal.prefijo}/canal/show/parameters
+      ribbon:
+        eureka:
+          enabled: false
+        NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+        listOfServers: ${connector.tuxedo.canal.host},${connector.tuxedo.canal.host}
+        # Max number of retries on the same server (excluding the first try)
+        MaxAutoRetries: 1
+        # Max number of next servers to retry (excluding the first server)
+        MaxAutoRetriesNextServer: 1
+        # Interval to refresh the server list from the source
+        ServerListRefreshInterval: 15000
+
+        # create and drop tables and sequences, loads import.sql
+        
