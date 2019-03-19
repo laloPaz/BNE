@@ -1,0 +1,94 @@
+server:
+  port: 7775
+
+info:
+  component: ${spring.application.name}
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 40000
+  threadpool:
+    default:
+      coreSize: 350
+      maximumSize: 350
+      maxQueueSize: -1
+      queueSizeRejectionThreshold: 20
+      allowMaximumSizeToDivergeFromCoreSize: true
+      
+######### Cache      
+ccp:
+  gemfire:
+    region: OPSV_SESSION_SOEID
+    expire: 900
+    devhost: db-memory
+    devport: 10334
+ 
+########## GENERAL 
+logging:
+  pattern: 
+    console: "%p, %d{'yyyy-MM-dd HH:mm:ss,SSS',America/Mexico_City}, %C{1}:%M:%L, %X{uuid}, %X{sid}, %X{user}, %X{representative}, %m%n" 
+  level:
+    org.springframework.web: INFO
+    com.citibanamex: DEBUG 
+
+urls:
+
+connector:
+  tuxedo:
+    protocol: TLSv1.2
+    https: false
+    ping : /banamex.c735_120/bmxapp/funcional/v1/info
+    timeOutConnect: 40000
+    timeOutConnectRequest: 40000
+    timeOutConnectSocket: 40000
+    hostVerify : false
+
+    funcional:
+      prefijo: /banamex.c735_120/bmxapp/funcional/v1
+      uri:
+        service: ${connector.tuxedo.funcional.prefijo}/service
+      ribbon:
+        eureka:
+          enabled: false
+        
+        listOfServers: tuxedo-aws:80
+        MaxAutoRetries: 0
+        MaxAutoRetriesNextServer: 1
+        ServerListRefreshInterval: 15000
+
+    canal:
+      prefijo: /banamex.c735_120/bmxapp/canal/v1
+      uri:
+        service: ${connector.tuxedo.canal.prefijo}/service
+      ribbon:
+        eureka:
+          enabled: false
+        
+        listOfServers: tuxedo-aws:80
+        MaxAutoRetries: 0
+        MaxAutoRetriesNextServer: 1
+        ServerListRefreshInterval: 15000
+
+
+tuxedoCacheValues:
+  SF:          #variables que pueden tener variales estaticas  meter~sacar
+    
+    MANTENSES_BE: ~I_IDIOMA|I_ORIGEN
+  CI:
+
+  
+channelParameters:
+  "17091201":          
+    I_APLORIGEN: "0001"
+    I_MODORIGEN: "01"
+    STDI_DISP_TIPOMODAL: "16"
+  "17189501":
+    I_APLORIGEN: "0245"
+    I_MODORIGEN: "78"
+    STDI_DISP_TIPOMODAL: "16"
+
+        
