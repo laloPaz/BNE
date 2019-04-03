@@ -1,2 +1,6 @@
 server:
   port: 7812
+
+reglas:
+  - TAXI_FARE_RULE.drl
+  - TAXI_FARE_RULE2.drl
