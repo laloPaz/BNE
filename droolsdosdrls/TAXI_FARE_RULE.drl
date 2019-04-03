@@ -1,0 +1,16 @@
+package com.expample.web.droolsdos
+
+import com.expample.web.droolsdos.model.Fare;
+import com.expample.web.droolsdos.model.TaxiRide;
+
+
+global com.expample.web.droolsdos.model.Fare rideFare;
+dialect "mvel"
+    
+rule "Calculate Taxi Fare - Scenario 1"
+	when
+        taxiRideInstance: TaxiRide(isNightSurcharge == false && distanceInMile < 10);
+    then
+        rideFare.setNightSurcharge(1);
+        rideFare.setRideFare(70);
+end
