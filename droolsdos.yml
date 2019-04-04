@@ -3,5 +3,5 @@ server:
 
 reglas:
   - TAXI_FARE_RULE.drl
-  - TAXI_FARE_RULE2.drl
   - TAXI_FARE_RULE3.drl
+  - TAXI_FARE_RULE2.drl
